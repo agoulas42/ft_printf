@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_handle_uoxx.c                                   :+:      :+:    :+:   */
+/*   ft_lst_printf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/27 15:08:42 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/30 18:30:08 by agoulas          ###   ########.fr       */
+/*   Created: 2018/07/12 13:20:27 by agoulas           #+#    #+#             */
+/*   Updated: 2018/07/12 14:02:36 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
+#include "../includes/libft.h"
 
-int			ft_handle_uox(t_format **f, t_conv *p, va_list *ap)
+int		ft_lst_printf(t_list *f)
 {
-	if (p->specifier == 'o' || p->specifier == 'O')
+	t_list	*p;
+	int		sum;
+	int		size;
+
+	p = f;
+	sum = 0;
+	while (p && p->content)
 	{
-		return (ft_handle_o(f, p, ap));
+		size = p->content_size;
+		write(1, p->content, size);
+		sum = sum + size;
+		p = p->next;
 	}
-	else if (p->specifier == 'u' || p->specifier == 'U')
-	{
-		return (ft_handle_u(f, p, ap));
-	}
-	else if (p->specifier == 'x' || p->specifier == 'X')
-	{
-		return (ft_handle_x(f, p, ap));
-	}
-	else
-		return (0);
-	return (1);
+	return (sum);
 }

@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/27 15:08:42 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/28 16:38:04 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/17 13:46:37 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ static int	hand_up_aux(t_format **f, char **num, t_conv *p, union u_uox value)
 		return (1);
 	v = (p->precs > d) ? p->precs : d;
 	if (p->fl_minus == 0 && p->width > v)
-		ft_s_empty(f, (*f)->pos_b, (p->width - v), ' ');
+		ft_s_empty(f, (p->width - v), ' ');
 	if (p->precs > d)
-		ft_s_empty(f, (*f)->pos_b, (p->precs - d), '0');
-	ft_strncat((*f)->buffer, *num, d);
-	(*f)->pos_b = (*f)->pos_b + d;
+		ft_s_empty(f, (p->precs - d), '0');
+	write_buffer_str(f, *num, d);
 	if (p->fl_minus == 1 && p->width > v)
-		ft_s_empty(f, (*f)->pos_b, (p->width - v), ' ');
+		ft_s_empty(f, (p->width - v), ' ');
 	return (1);
 }
 
@@ -48,11 +47,10 @@ static int	hand_up(t_format **f, char **num, t_conv *p, union u_uox value)
 	if (p->precs < d && p->precs != 0)
 	{
 		if (p->fl_minus == 0 && p->width > d)
-			ft_s_empty(f, (*f)->pos_b, (p->width - d), ' ');
-		ft_strncat((*f)->buffer, *num, d);
-		(*f)->pos_b = (*f)->pos_b + d;
+			ft_s_empty(f, (p->width - d), ' ');
+		write_buffer_str(f, *num, d);
 		if (p->fl_minus == 1 && p->width > p->precs)
-			ft_s_empty(f, (*f)->pos_b, (p->width - d), ' ');
+			ft_s_empty(f, (p->width - d), ' ');
 	}
 	else
 		return (hand_up_aux(f, num, p, value));
@@ -69,11 +67,10 @@ static int	hand_u(t_format **f, char **num, t_conv *p, union u_uox value)
 	if (p->precs > -1)
 		return (hand_up(f, num, p, value));
 	if (p->fl_minus == 0 && p->width > 0)
-		ft_s_empty(f, (*f)->pos_b, (p->width - d), c);
-	ft_strncat((*f)->buffer, *num, d);
-	(*f)->pos_b = (*f)->pos_b + d;
+		ft_s_empty(f, (p->width - d), c);
+	write_buffer_str(f, *num, d);
 	if (p->fl_minus == 1 && p->width > 0)
-		ft_s_empty(f, (*f)->pos_b, (p->width - d), c);
+		ft_s_empty(f, (p->width - d), c);
 	return (1);
 }
 
@@ -81,12 +78,9 @@ int			ft_handle_u(t_format **f, t_conv *p, va_list *ap)
 {
 	char			*num;
 	union u_uox		value;
-	int				size;
 
 	if ((ft_init_union_uox(&value, p, ap) == 0)
-			|| ((num = ft_itoa_union_uox(value, p)) == NULL)
-			|| (size = size_value_uox(num, p, value) == 0)
-			|| (ft_buffer_check(f, size) == 0))
+			|| ((num = ft_itoa_union_uox(value, p)) == NULL))
 		return (0);
 	hand_u(f, &num, p, value);
 	(*f)->pos_b = ft_strlen((*f)->buffer);

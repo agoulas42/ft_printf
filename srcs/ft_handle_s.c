@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:54:42 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/29 16:38:17 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/06/30 18:01:39 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,17 @@ static int		ft_hand_prec(char **s, t_format **f, t_conv *p)
 	d = ft_strlen(*s);
 	u = (p->width > p->precs && p->width > d) ? p->width : p->precs;
 	d = (p->precs < d) ? p->precs : d;
-	(u > d) ? ft_buffer_check(f, u) : ft_buffer_check(f, d);
 	if (p->fl_minus == 1)
 	{
-		ft_strncat((*f)->buffer, *s, d);
-		(*f)->pos_b = (*f)->pos_b + d;
+		write_buffer_str(f, *s, d);
 		if (p->width > d)
-			ft_s_empty(f, (*f)->pos_b, (p->width - d), c);
+			ft_s_empty(f, (p->width - d), c);
 	}
 	else
 	{
 		if (p->width > d)
-			ft_s_empty(f, (*f)->pos_b, (p->width - d), c);
-		ft_strncat((*f)->buffer, *s, d);
+			ft_s_empty(f, (p->width - d), c);
+		write_buffer_str(f, *s, d);
 	}
 	return (1);
 }
@@ -73,21 +71,20 @@ int				ft_handle_s(t_format **f, t_conv *p, va_list *ap)
 	int		d;
 
 	s = NULL;
-	if ((d = ft_hand_str(&s, p, ap)) == -1 || ft_buffer_check(f, d) == 0)
+	if ((d = ft_hand_str(&s, p, ap)) == -1)
 		return (d);
 	if (p->precs != -1)
 		ft_hand_prec(&s, f, p);
 	else if (p->width == 0)
-		ft_strncat((*f)->buffer, s, d);
+		write_buffer_str(f, s, d);
 	else
 	{
-		ft_buffer_check(f, p->width);
 		if (p->fl_minus == 1)
-			ft_strncat((*f)->buffer, s, d);
+			write_buffer_str(f, s, d);
 		c = (p->fl_zero == 1 && p->fl_minus == 0) ? '0' : ' ';
-		ft_s_empty(f, ft_strlen((*f)->buffer), (p->width - d), c);
+		ft_s_empty(f, (p->width - d), c);
 		if (p->fl_minus == 0)
-			ft_strncat((*f)->buffer, s, d);
+			write_buffer_str(f, s, d);
 	}
 	(*f)->pos_b = ft_strlen((*f)->buffer);
 	(*f)->lst_pourc = (*f)->pos_b;

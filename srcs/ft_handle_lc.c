@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 13:57:54 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/26 15:14:56 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/06/30 18:27:35 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int			ft_handle_lc(t_format **f, t_conv *p, va_list *ap)
 
 	c1 = va_arg(*ap, wint_t);
 	d = ft_wcharstrlen(c1);
-	if (d == -1 || ft_buffer_check(f, d) == 0)
+	if (d == -1)
 		return (-1);
 	else
 	{
@@ -30,10 +30,9 @@ int			ft_handle_lc(t_format **f, t_conv *p, va_list *ap)
 			c = ft_char_wchar(f, c1, d);
 		else
 		{
-			ft_buffer_check(f, p->width);
 			if (p->fl_minus == 1)
 				c = ft_char_wchar(f, c1, d);
-			ft_s_empty(f, (*f)->pos_b, (p->width - d), ' ');
+			ft_s_empty(f, (p->width - d), ' ');
 			if (p->fl_minus == 0)
 				c = ft_char_wchar(f, c1, d);
 		}

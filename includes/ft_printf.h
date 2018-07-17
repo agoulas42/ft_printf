@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 11:33:26 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/28 16:55:12 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/17 14:36:10 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stddef.h>
 # include "../libft/includes/libft.h"
 # include <wchar.h>
-# define SIZE_MAX_BUF 9999
+# define SIZE_MAX_BUF 4
 
 typedef struct				s_format
 {
@@ -31,7 +31,8 @@ typedef struct				s_format
 	size_t					pos_b;
 	size_t					lst_pourc;
 	char					buffer[SIZE_MAX_BUF];
-	t_list					*lst;
+	t_list					*lst_write;
+	size_t					list_lst;
 	va_list					ap;
 }							t_format;
 
@@ -98,26 +99,15 @@ int							ft_find_prec(t_conv **p, t_format **f, va_list *ap);
 int							ft_find_width(t_conv **p, t_format **f,
 		va_list *ap);
 int							init_tconv(t_conv **p, t_format **f, va_list *ap);
-
-void						char_abs_nbr(char **num, union u_di value,
-		t_conv *p);
 int							parsing_format(t_format **f, va_list *ap);
-int							ft_fl_empty(char **s, int nbr, char c);
-int							ft_fl_plus(char **s, union u_di value, t_conv *p);
-int							ft_fl_diese(char **s, union u_uox value,
-		t_conv *p);
 char						*ft_itoa_union_di(union u_di value, t_conv *p);
 char						*ft_itoa_union_uox(union u_uox value, t_conv *p);
 char						*ft_itoa_base_uox(uintmax_t value, int base,
 		int maj);
 int							ft_init_union_di(union u_di *value, t_conv *p,
 		va_list *ap);
-int							size_value(char *num, t_conv *p, union u_di value);
-int							size_value_uox(char *num, t_conv *p,
-		union u_uox value);
 int							return_sign_uox(t_conv *p, union u_uox value);
 int							return_sign_num(t_conv *p, union u_di value);
-
 int							ft_init_union_uox(union u_uox *value, t_conv *p,
 		va_list *ap);
 int							specifier_di(char c);
@@ -137,19 +127,18 @@ int							ft_handle_uox(t_format **f, t_conv *p,
 		va_list *ap);
 int							ft_test_fldi(t_format **f, union u_di value,
 		t_conv *p);
-int							ft_test_fluox(char **s, char *num,
-		union u_uox value, t_conv *p);
-
 int							ft_char_wchar(t_format **f, wchar_t c, int len);
-int							ft_s_empty(t_format **f, int start, int nbr,
-		char c);
+int							ft_s_empty(t_format **f, int nbr, char c);
 int							ft_wcharstrlen(wchar_t c);
-char						*ft_get_str(t_format **f, t_conv *p, va_list *ap);
 int							forbiddenwchar(wchar_t c);
 int							ft_conv_wchar(char **buf, wchar_t c, int lentgh);
 int							ft_wc_nbr(wchar_t *s, int nbr);
 int							ft_strwchar(char **res, wchar_t *s, t_conv *p);
-int							ft_buffer_check(t_format **f, int length);
 void						ft_add_0x_o(char **num, t_conv *p);
 void						ft_add_0x_x(t_format **f, int i, t_conv *p);
+int							write_buffer(t_format **f, char c);
+int							write_buffer_str(t_format **f, char *s, int len);
+char						*ft_strsubf(char const *s,
+		unsigned int start, size_t len);
+
 #endif

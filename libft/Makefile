@@ -6,7 +6,7 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 15:28:36 by agoulas           #+#    #+#              #
-#    Updated: 2018/06/25 18:03:27 by agoulas          ###   ########.fr        #
+#    Updated: 2018/07/12 16:16:27 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libft.a
@@ -32,7 +32,7 @@ SOURCES = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		ft_is_prime.c ft_lstadd_last.c ft_lst_del_one.c ft_realloc.c\
 		ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
-		ft_strtolower_rea.c ft_strtoupper_rea.c\
+		ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
 
 SRCS=$(addprefix srcs/, $(SOURCES))
 OBJS=$(addprefix build/, $(SOURCES:.c=.o))
@@ -64,3 +64,6 @@ fclean: clean
 
 re: fclean all
 	@echo "Re libft"
+
+norme:
+	norminette $(SRC) $(HDR)

@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 15:05:01 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/27 13:44:53 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/17 13:47:33 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,14 @@ static int	ft_hand_precs(t_format **f, char **num, t_conv *p)
 	d = ft_strlen(*num);
 	u = (d > p->precs) ? p->precs : d;
 	v = (p->width > d) ? p->width : u;
-	ft_buffer_check(f, v);
 	if (p->width > 0 && p->width > d + 2 && p->width > p->precs)
-		ft_s_empty(f, (*f)->pos_b, (p->width - (d + 2)), ' ');
-	ft_strcat((*f)->buffer, "0x");
-	(*f)->pos_b = (*f)->pos_b + 2;
+		ft_s_empty(f, (p->width - (d + 2)), ' ');
+	write_buffer_str(f, "0x", 2);
 	if (p->precs == 0 && ft_strcmp(*num, "0") == 0)
 		return (1);
 	if (p->precs > 0)
-		ft_s_empty(f, (*f)->pos_b, (p->precs - d), '0');
-	ft_strcat((*f)->buffer, *num);
-	(*f)->pos_b = (*f)->pos_b + d;
+		ft_s_empty(f, (p->precs - d), '0');
+	write_buffer_str(f, *num, d);
 	return (1);
 }
 
@@ -53,15 +50,13 @@ static int	ft_hand_p(t_format **f, char **num, t_conv *p)
 
 	c = (p->fl_minus == 0 && p->fl_zero == 1) ? '0' : ' ';
 	d = ft_strlen(*num);
-	ft_buffer_check(f, p->width);
 	if (p->fl_minus == 0 && p->width > (d + 2) && p->fl_zero == 0)
-		ft_s_empty(f, (*f)->pos_b, (p->width - d - 2), ' ');
-	ft_strcat((*f)->buffer, "0x");
-	ft_strcat((*f)->buffer, *num);
-	(*f)->pos_b = (*f)->pos_b + d + 2;
-	if ((p->fl_minus == 1 && p->width > (d + 2))
-			|| (p->fl_minus == 0 && p->width > (d + 2) && p->fl_zero == 1))
-		ft_s_empty(f, (*f)->pos_b, (p->width - d - 2), c);
+		ft_s_empty(f, (p->width - d - 2), ' ');
+	write_buffer_str(f, "0x", 2);
+	write_buffer_str(f, *num, d);
+	if (p->width > (d + 2) && ((p->fl_minus == 1)
+				|| ((p->fl_minus == 0 && p->fl_zero == 1))))
+		ft_s_empty(f, (p->width - d - 2), c);
 	return (1);
 }
 
@@ -81,10 +76,8 @@ int			ft_handle_p(t_format **f, t_conv *p, va_list *ap)
 		d = ft_strlen(num);
 		if (p->width == 0)
 		{
-			ft_buffer_check(f, d + 2);
-			ft_strcat((*f)->buffer, "0x");
-			ft_strcat((*f)->buffer, num);
-			(*f)->pos_b = (*f)->pos_b + d + 2;
+			write_buffer_str(f, "0x", 2);
+			write_buffer_str(f, num, d);
 		}
 		else
 			ft_hand_p(f, &num, p);

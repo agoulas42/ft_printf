@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:34:39 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/26 15:14:48 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/06/30 17:57:44 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,13 @@ int			ft_char_wchar(t_format **f, wchar_t c, int len)
 {
 	int		d;
 	char	*s;
-	int		i;
 
 	s = NULL;
 	d = 0;
 	if (len < 0 || (s = (char*)malloc(sizeof(char) * (len + 1))) == NULL)
 		return (-1);
 	if ((d = ft_wctomb(s, c)) != -1)
-	{
-		i = 0;
-		while (i < d)
-		{
-			(*f)->buffer[(*f)->pos_b + i] = s[i];
-			i++;
-		}
-		(*f)->pos_b = (*f)->pos_b + d;
-	}
+		write_buffer_str(f, s, d);
 	free(s);
 	return (d);
 }

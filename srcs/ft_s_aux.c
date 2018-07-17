@@ -6,14 +6,14 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 16:20:28 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/04 17:06:16 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/10 15:58:00 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 #include <stdarg.h>
 
-int			ft_s_empty(t_format **f, int start, int nbr, char c)
+int			ft_s_empty(t_format **f, int nbr, char c)
 {
 	int		i;
 
@@ -22,9 +22,8 @@ int			ft_s_empty(t_format **f, int start, int nbr, char c)
 		return (0);
 	while (i < nbr)
 	{
-		(*f)->buffer[start + i] = c;
+		write_buffer(f, c);
 		i++;
 	}
-	(*f)->pos_b = (*f)->pos_b + i;
 	return (1);
 }

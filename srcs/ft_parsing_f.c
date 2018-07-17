@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 15:33:22 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/25 15:32:39 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/12 13:56:20 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,6 @@ static int	parsing_arg(t_format **f, va_list *ap)
 	return (c);
 }
 
-int			ft_buffer_check(t_format **f, int length)
-{
-	t_list	*tmp;
-	char	*str;
-	int		size;
-
-	str = NULL;
-	if ((length != -1 && (*f)->pos_b + length >= (SIZE_MAX_BUF)))
-	{
-		(*f)->buffer[(*f)->pos_b] = '\0';
-		if ((str = ft_strdup((*f)->buffer)) == NULL)
-			return (0);
-		size = ft_strlen(str);
-		if ((tmp = ft_lstnew(str, size)) == NULL)
-			return (0);
-		ft_lstadd_last((&(*f)->lst), tmp);
-		(*f)->length_write = (*f)->length_write + size;
-		ft_bzero((*f)->buffer, size);
-		(*f)->pos_b = 0;
-		(*f)->lst_pourc = 0;
-		free(str);
-	}
-	return (1);
-}
-
 int			parsing_format(t_format **f, va_list *ap)
 {
 	int		c;
@@ -88,10 +63,8 @@ int			parsing_format(t_format **f, va_list *ap)
 	{
 		if ((*f)->format[(*f)->pos_f] != '%')
 		{
-			ft_buffer_check(f, 1);
-			(*f)->buffer[(*f)->pos_b] = (*f)->format[(*f)->pos_f];
+			write_buffer(f, (*f)->format[(*f)->pos_f]);
 			(*f)->pos_f++;
-			(*f)->pos_b++;
 		}
 		else
 		{

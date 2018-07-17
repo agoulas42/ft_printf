@@ -6,14 +6,14 @@
 #    By: agoulas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/26 12:06:01 by agoulas           #+#    #+#              #
-#    Updated: 2018/06/29 17:23:19 by agoulas          ###   ########.fr        #
+#    Updated: 2018/07/17 14:40:34 by agoulas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = libftprintf.a
-CFLAGS = -Wall -Werror -Wextra -w -pedantic
-CFLAGS2 = -Wall -Werror -Wextra -W -pedantic
+CFLAGS = -Wall -Werror -Wextra
+CFLAGS2 = -Wall -Werror -Wextra
 HEADER = includes
 CPPFLAGS = -I $(HEADER)
 
@@ -36,7 +36,6 @@ SRC = ft_printf.c\
 	  ft_union_di.c\
 	  ft_handle_di.c\
 	  ft_test_value_mod.c\
-	  ft_test_char_mod.c\
 	  ft_handle_c.c\
 	  ft_handle_lc.c\
 	  ft_union_uoxx.c\
@@ -52,6 +51,7 @@ SRC = ft_printf.c\
 	  ft_handle_s.c\
 	  ft_s_aux.c\
 	  ft_strwchar.c\
+	  ft_buffer.c\
 
 SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		  ft_memccpy.c ft_memcmp.c ft_memdel.c ft_memset.c \
@@ -71,7 +71,7 @@ SRC_L = ft_atoi.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 		  ft_is_prime.c ft_lstadd_last.c ft_lst_del_one.c ft_realloc.c\
 		  ft_itoa_base.c ft_putwchar.c ft_strtolower.c ft_strtoupper.c\
 		  ft_strcpy_from_to.c ft_wclen.c ft_wcslen.c ft_wctomb.c ft_wcscmp.c\
-		  ft_strtolower_rea.c ft_strtoupper_rea.c\
+		  ft_strtolower_rea.c ft_strtoupper_rea.c ft_lst_del.c ft_lst_printf.c\
 
 SRCS=$(addprefix $(DIR_S)/, $(SRC))
 SRCS_L=$(addprefix $(DIR_LS)/, $(SRC_l))
@@ -104,4 +104,5 @@ fclean : clean
 re : fclean all
 
 norme :
-	@norminette $(SRCS) $(SRCS_L) $(HEADER)
+	@norminette $(SRCS) $(HEADER)
+	make -C libft norme

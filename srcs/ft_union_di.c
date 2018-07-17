@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 17:16:44 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/29 17:11:55 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/17 13:49:01 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,6 @@ int		specifier_di(char c)
 	if (c == 'd' || c == 'i' || c == 'D')
 		return (1);
 	return (0);
-}
-
-int		size_value(char *num, t_conv *p, union u_di value)
-{
-	signed int	size;
-	int			d;
-	int			ret_signe;
-
-	d = ft_strlen(num);
-	ret_signe = return_sign_num(p, value);
-	size = 0;
-	if (p->precs == 0 && ret_signe == 0)
-		size = 0;
-	else if ((p->precs == 0 && ret_signe != 0) || p->precs <= d)
-		size = ft_strlen(num);
-	else if (p->precs > d && p->precs > -1)
-		size = p->precs;
-	if (p->fl_plus == 1 || (p->fl_space == 1) || ret_signe == -1)
-		size++;
-	if (p->width > 0 && p->width > size)
-		size = p->width;
-	if (size < 0)
-		size = 0;
-	return (size);
 }
 
 int		ft_init_union_di(union u_di *value, t_conv *p, va_list *ap)

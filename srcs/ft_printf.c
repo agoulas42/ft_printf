@@ -6,28 +6,15 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/24 11:30:22 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/28 16:11:33 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/12 13:31:02 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-static int	ft_del_lst_all(t_list **f)
-{
-	if ((*f) != NULL)
-	{
-		if ((*f)->next != NULL)
-			ft_del_lst_all(&((*f)->next));
-		ft_lst_del_one((*f), (*f)->content, (*f)->content_size);
-	}
-	return (1);
-}
-
 static int	free_printf(int d, int c, va_list *ap, t_format **f)
 {
 	va_end(*ap);
-	if ((*f)->lst != NULL)
-		ft_del_lst_all(&((*f)->lst));
 	free(*f);
 	*f = NULL;
 	if (c == -1 || c == 0)
@@ -47,24 +34,8 @@ static int	ft_test_caratere(char *s, int c)
 		if (s[i++] == c)
 			return (0);
 	}
-	ft_putstr(s);
+	write(1, s, i);
 	return (i);
-}
-
-int			print_lst_rec(t_list *l)
-{
-	t_list	*p;
-	int		d;
-
-	d = 0;
-	p = l;
-	while (p && p->content != NULL)
-	{
-		ft_putstr(p->content);
-		d = d + ft_strlen(p->content);
-		p = p->next;
-	}
-	return (d);
 }
 
 int			ft_printf(char const *format, ...)
@@ -73,10 +44,8 @@ int			ft_printf(char const *format, ...)
 	t_format	*f;
 	size_t		d;
 	int			c;
-	int			u;
 
 	c = 0;
-	u = 0;
 	f = NULL;
 	if ((d = ft_test_caratere((char*)format, '%')) != 0)
 		return (d);
@@ -87,11 +56,12 @@ int			ft_printf(char const *format, ...)
 			return (0);
 		if ((c = parsing_format(&f, &ap)) != 0)
 		{
-			f->pos_b = (c == -1) ? f->lst_pourc : f->pos_b;
-			u = print_lst_rec(f->lst);
-			while (d < f->pos_b)
-				ft_putchar(f->buffer[d++]);
+			if (f->pos_b != 0)
+			{
+				f->pos_b = (c == -1) ? f->lst_pourc : f->pos_b;
+				write(1, f->buffer, f->pos_b);
+			}
 		}
-		return (free_printf(d + u, c, &ap, &f));
+		return (free_printf(f->pos_b + f->length_write, c, &ap, &f));
 	}
 }

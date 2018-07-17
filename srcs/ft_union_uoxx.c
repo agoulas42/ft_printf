@@ -6,7 +6,7 @@
 /*   By: agoulas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/27 14:58:33 by agoulas           #+#    #+#             */
-/*   Updated: 2018/06/29 16:10:43 by agoulas          ###   ########.fr       */
+/*   Updated: 2018/07/17 13:49:28 by agoulas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,6 @@ int				specifier_uox(char c)
 	if (c == 'u' || c == 'U' || c == 'o' || c == 'O' || c == 'x' || c == 'X')
 		return (1);
 	return (0);
-}
-
-int				size_value_uox(char *num, t_conv *p, union u_uox value)
-{
-	signed int	size;
-	int			d;
-	int			ret_signe;
-
-	size = 0;
-	ret_signe = return_sign_uox(p, value);
-	d = ft_strlen(num);
-	if ((p->precs == 0 && ret_signe != 0) || p->precs == -1 || p->precs <= d)
-		size = d;
-	else if ((p->precs > d && p->precs > -1) || p->precs > p->width)
-		size = p->precs;
-	if (p->fl_diese == 1 && ret_signe != 0)
-	{
-		if (p->specifier == 'o' || p->specifier == 'O')
-			size++;
-		if (p->specifier == 'x' || p->specifier == 'X')
-			size++;
-	}
-	if (p->width != 0 && p->width > size && p->width > p->precs && p->width > d)
-		size = p->width;
-	if (size < -1)
-		size = 0;
-	return (size);
 }
 
 int				ft_init_union_uox(union u_uox *value, t_conv *p, va_list *ap)
